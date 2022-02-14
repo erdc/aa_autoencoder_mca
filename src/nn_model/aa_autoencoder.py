@@ -4,6 +4,7 @@ import numpy as np
 import scipy
 import tensorflow as tf
 from tensorflow import keras
+from tensorflow.keras import layers
 from tensorflow.keras import backend as K
 from tensorflow.keras.layers import Dense, LSTM, InputLayer
 from tensorflow.keras.models import Sequential
@@ -11,10 +12,12 @@ from tensorflow.keras import regularizers
 
 
 class Encoder(tf.keras.layers.Layer):
-    def __init__(self, latent_dim, act, hidden_dim, **kwargs):
-        super(Encoder, self).__init__(**kwargs)
 
-        l2 = regularizers.l2(kwargs['reg'])
+    def __init__(self, latent_dim, act, hidden_dim, name="encoder", **kwargs):
+        super(Encoder, self).__init__(name=name, **kwargs)
+
+        print(list(kwargs.keys()))
+        l2 = regularizers.l2(kwargs['regu'])
         self.latent_dim = latent_dim
         self.activation = act
         self.hidden_units = hidden_dim[1:]
@@ -32,10 +35,11 @@ class Encoder(tf.keras.layers.Layer):
 
 
 class Shift(tf.keras.layers.Layer):
-    def __init__(self, latent_dim, act, hidden_dim, **kwargs):
-        super(Shift, self).__init__(**kwargs)
 
-        l2 = regularizers.l2(kwargs['reg'])
+    def __init__(self, latent_dim, act, hidden_dim, name ="shift", **kwargs):
+        super(Shift, self).__init__(name=name, **kwargs)
+
+        l2 = regularizers.l2(kwargs['regu'])
         self.activation = act
         self.hidden_units = np.flip(hidden_dim[1:])
         self.input_dim = latent_dim
@@ -51,10 +55,11 @@ class Shift(tf.keras.layers.Layer):
 
 
 class Decoder(tf.keras.layers.Layer):
-    def __init__(self, latent_dim, act, hidden_dim, **kwargs):
-        super(Decoder, self).__init__(**kwargs)
 
-        l2 = regularizers.l2(kwargs['reg'])
+    def __init__(self, latent_dim, act, hidden_dim, name="decoder", **kwargs):
+        super(Decoder, self).__init__(name=name, **kwargs)
+
+        l2 = regularizers.l2(kwargs['regu'])
         self.activation = act
         self.hidden_units = np.flip(hidden_dim[1:])
         self.input_dim = latent_dim
@@ -71,16 +76,19 @@ class Decoder(tf.keras.layers.Layer):
 
 
 class AAautoencoder(tf.keras.Model):
-    def __init__(self, latent_dim, act, hidden_dim, **kwargs):
-        super(AAautoencoder, self).__init__(**kwargs)
+
+    def __init__(self, latent_dim, act, hidden_dim, name="autoencoder", **kwargs):
+        super(AAautoencoder, self).__init__(name=name, **kwargs)
+
         try:
             self.l2_lam = kwargs['l2_lam']
         except:
             self.l2_lam = 1e-6
 
-        self.encoder = Encoder(latent_dim, act, hidden_dim,reg=self.l2_lam)
-        self.shift = Shift(latent_dim, act, hidden_dim,reg=self.l2_lam)
-        self.decoder = Decoder(latent_dim, act, hidden_dim,reg=self.l2_lam)
+        print(self.l2_lam)
+        self.encoder = Encoder(latent_dim, act, hidden_dim,regu=self.l2_lam)
+        self.shift = Shift(latent_dim, act, hidden_dim,regu=self.l2_lam)
+        self.decoder = Decoder(latent_dim, act, hidden_dim,regu=self.l2_lam)
 
     def call(self, input_features):
         encoded = self.encoder(input_features)
@@ -95,5 +103,3 @@ class AAautoencoder(tf.keras.Model):
     @classmethod
     def from_config(cls, config):
         return cls(**config)
-
-        
