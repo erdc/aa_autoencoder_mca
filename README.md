@@ -23,5 +23,5 @@ A list of all the package requirements along with version information will be pr
 
 ### Executing program
 
-* Generate the high-fidelity snapshot data by running the script `examples/2DLinearAdvection.py'. It automatically saves the snapshot files in the `data' directory.
-* The AA autoencoder training and evaluation can be performed using the notebook `examples/AA_autoencoder_parametric_2DLinearAdvection.ipynb'.
+* Generate the high-fidelity snapshot data by running the script `examples/2DLinearAdvection.py`. It automatically saves the snapshot files in the `data` directory.
+* The AA autoencoder training and evaluation can be performed using the notebook `examples/AA_autoencoder_parametric_2DLinearAdvection.ipynb`.
