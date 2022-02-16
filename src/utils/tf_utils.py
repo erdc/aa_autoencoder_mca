@@ -89,33 +89,39 @@ def split_sequence_multi(sequences, n_steps):
 ### Custom loss functions for NN training
 @tf.function
 def root_mean_squared_error_loss(y_true, y_pred):
-    return tf.sqrt(tf.reduce_mean(tf.square(y_pred - y_true))) 
+    return tf.sqrt(tf.reduce_mean(tf.square(y_pred - y_true)))
+    loss.__name__ = "root_mean_squared_error_loss"
 
 @tf.function
 def rel_rms_error_loss(y_true, y_pred):
     err = tf.sqrt(tf.reduce_mean(tf.square(y_pred - y_true)))
     denominator = tf.sqrt(tf.reduce_mean(tf.square(y_true))) + 10 **(-6)
     return  tf.truediv(err, denominator)
-
+    loss.__name__ = "rel_rms_error_loss"
+    
 @tf.function
 def normalized_mean_squared_error_loss(y_true, y_pred):
     mse = tf.reduce_mean(tf.square(y_pred - y_true))
     true_norm = tf.reduce_mean(tf.square(y_true)) + 1e-6
     return  tf.truediv(mse, true_norm)
+    loss.__name__ = "normalized_mean_squared_error_loss"
 
 @tf.function
 def pseudo_Huber_loss(y_true, y_pred, delta=0.25):
     a = tf.reduce_mean(y_pred - y_true)
     return (tf.sqrt(1 + (a/delta)**2) - 1)*delta**2
+    loss.__name__ = "pseudo_Huber_loss"
     
 @tf.function    
 def mean_abs_percentage_error_loss(y_true, y_pred, eta=1e-6):
     return tf.reduce_mean(tf.abs(y_pred - y_true)/(tf.abs(y_true)+eta))
+    loss.__name__ = "mean_abs_percentage_error_loss"
+
 
 @tf.function
 def max_absolute_error_loss(y_true, y_pred):
     return K.max(tf.abs(y_pred - y_true))
-
+    loss.__name__ = "max_absolute_error_loss"
 
 @tf.function
 def comb_loss(y_true, y_pred, lb = 0.7, eta=1e-8, delta = 0.5):
@@ -142,6 +148,7 @@ def comb_loss(y_true, y_pred, lb = 0.7, eta=1e-8, delta = 0.5):
     loss6 = normalized_mean_squared_error_loss(y_true, y_pred)
     
     return (1-lb)*loss2 + lb*loss6
+    loss.__name__ = "comb_loss"
 
 
 
