@@ -7,7 +7,7 @@ Email: sourav.dutta@erdc.dren.mil for any questions/feedback.
 Advection-aware Autoencoder Architecture
 :-----:
 <p align="center">
-    <img align = 'center' height="500" src="figures/aa_autoencoder_arch_new.jpg?raw=true">
+    <img align = 'center' height="500" src="figures/aa_autoencoder_arch_new.jpeg?raw=true">
 </p>
 
 
