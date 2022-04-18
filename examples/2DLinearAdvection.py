@@ -12,6 +12,7 @@ except:
 data_dir = os.path.join(base_dir,'../data/')
 
 
+
 ## Runtime Options
 visualize = False
 save_data = True
@@ -55,12 +56,12 @@ def Gaussian2D(x, y, t, c, **kwargs):
     try:
         sigma_x = kwargs['sigma_x']
     except:
-        sigma_x = 8
+        sigma_x = 5
 
     try:
         sigma_y = kwargs['sigma_y']
     except:
-        sigma_y = 8
+        sigma_y = 5
 
     arg = (x - x0)**2/(2*sigma_x**2) + (y - c*t - y0)**2/(2*sigma_y**2)
     out = amp*np.exp(-arg)
@@ -70,56 +71,6 @@ def Gaussian2D(x, y, t, c, **kwargs):
 x0 = 0; y0 = 40
 
 
-## Generate parametric snapshots with varying speeds of propagation
-print("********Generating snapshots for variable speeds of propagation*******\n")
-pulse1 = {}; time1 = {}
-sigma = 8
-speed_list = [1, 2, 3, 4, 5, 6, 8] #
-for ix,speed in enumerate(speed_list):
-    time1[ix] = np.arange((y.max()-2*y0)//speed)
-    pulse1[ix] = np.zeros((xx.shape[0],xx.shape[1],time1[ix].size))
-    for nt in np.arange(time1[ix].size):
-        pulse1[ix][:,:,nt] = Gaussian2D(xx,yy, nt, c=speed,
-                                    sigma_x = y0/sigma, sigma_y = y0/sigma)
-    print("Generating solutions for Sigma = %.4f, Speed = %d"%(y0/sigma, speed))
-
-    if save_data:
-        np.savez_compressed(data_dir+'Gaussian2d_pulse_500x200_c%.2f_sigma%.4f'%(speed,y0/sigma),
-                pulse = pulse1[ix], x = xx, y = yy, t = time1[ix], c = speed, sigma = y0/sigma)
-
-if visualize:
-    nt=time1[ix][-2]
-    fig, ax = plt.subplots(nrows=1,ncols=len(speed_list),figsize=(16,6),constrained_layout=True)
-    for ix,speed in enumerate(speed_list):
-        ax[ix].imshow(pulse1[ix][:,:,nt],
-                   extent=[min(x),max(x),min(y),max(y)],
-                   origin="lower")
-        ax[ix].set_title('Speed = %d, \nTime = %d'%(speed,nt))
-        ax[ix].axis('off')
-    plt.suptitle("Snapshots of a linearly advecting 2D pulse at different speeds of propagation",fontsize=20)
-    # plt.show()
-    fig.savefig(data_dir+'Pulse2D_variable_speed.png',dpi=300,bbox_inches='tight')
-
-
-print("\n********Generating snapshots with different initial locations*******\n")
-## Generate parametric snapshots for varying speeds
-## with different starting points
-pulse2 = {}
-time2 = {}
-sigma = 8
-param_list = [(2,41), (3,41), (3,42), (4,41), (4,42), (4,43)]
-for ix,(speed,y0_var) in enumerate(param_list):
-    time2[ix] = np.arange((y.max()-2*y0)//speed)
-    pulse2[ix] = np.zeros((xx.shape[0],xx.shape[1],time2[ix].size))
-    for nt in np.arange(time2[ix].size):
-        pulse2[ix][:,:,nt] = Gaussian2D(xx,yy, nt, c=speed, y0 = y0_var,
-                                        sigma_x = y0/sigma, sigma_y = y0/sigma)
-    print("Generating solutions for Sigma = %.4f, Speed = %d, (x0,y0) = (0,%d)"%(y0/sigma, speed,y0_var))
-
-    if save_data:
-        np.savez_compressed(data_dir+'Gaussian2d_pulse_500x200_c%.2f_sigma%.4f_y0%d'%(speed,y0/sigma,y0_var),
-                            pulse = pulse2[ix], x = xx, y = yy, t = time2[ix], c = speed, sigma = y0/sigma,
-                           y0 = y0_var)
 
 
 print("\n********Generating snapshots for variable pulse sizes*******\n")
@@ -127,7 +78,7 @@ print("\n********Generating snapshots for variable pulse sizes*******\n")
 ## of varying sizes
 speed = 1
 pulse3 = {}; time3 = {}
-sigma_list = [2, 4, 8, 5, 2.5]  #
+sigma_list = [2, 4, 8, 5, 2.5, 1.6]  #
 for ix,sigma in enumerate(sigma_list):
     time3[ix] = np.arange(y.max()-2*y0)
     pulse3[ix] = np.zeros((xx.shape[0],xx.shape[1],time3[ix].size))
@@ -154,12 +105,14 @@ if visualize:
     fig.savefig(data_dir+'Pulse2D_variable_size.png',dpi=300,bbox_inches='tight')
 
 
+
+
 print("\n********Generating shifted snapshots for parametric variations*******\n")
 ## Generate parametric "shifted" snapshots for pulse
 ## of varying sizes
 vel = 1
 pulse4 = {}
-shift_param_list = [(1,2), (1,4), (1,8), (1,5), (1,2.5), (2,8), (3,8), (4,8), (5,8), (6,8), (8,8)]
+shift_param_list = [(1,2), (1,4), (1,8), (1,5), (1,2.5), (1,1.6), (2,8), (3,8), (4,8), (5,8), (6,8), (8,8)]
 for ix,(speed,sigma) in enumerate(shift_param_list):
     print('Generating shifted solutions for Sigma=%.4f, Speed = %d'%(y0/sigma, speed))
     pulse4[ix] = Gaussian2D(xx, yy, 240/speed, c=speed, sigma_x = y0/sigma,
@@ -181,6 +134,3 @@ if visualize:
         ax[ix].axis('off')
     plt.suptitle("Shifted snapshots of a linearly advecting 2D pulse with different parametric variations",fontsize=20,y=0.96)
     plt.show()
-
-    
-    
