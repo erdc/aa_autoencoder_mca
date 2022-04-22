@@ -1,6 +1,10 @@
 # Advection-aware autoencoders and long-short-term memory networks for reduced order modeling of parametric, advection-dominated PDEs
 
-This is supporting code for the manuscript "Reduced order modeling using advection-aware autoencoders" by Sourav Dutta, Peter Rivera-Casillas, Brent Styles and Matthew Farthing, that has been *accepted* for publication in the *Mathematical and Computational Applications* journal for the Special Issue: "Computational Methods for Coupled Problems in Science and Engineering". The AA autoencoder model is tested with a parametric linear advection problem and a parametric viscous advecting shock problem. 
+This is supporting code for the article
+```
+Dutta, S.; Rivera-Casillas, P.; Styles, B.; Farthing, M.W. Reduced Order Modeling Using Advection-Aware Autoencoders. Math. Comput. Appl. 2022, 27, 34. https://doi.org/10.3390/mca27030034
+```
+This article is part of the Special Issue: "Computational Methods for Coupled Problems in Science and Engineering".
 
 Email: sourav.dutta@erdc.dren.mil for any questions/feedback.
 
