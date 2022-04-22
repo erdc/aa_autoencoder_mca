@@ -2,7 +2,9 @@
 
 This is supporting code for the article
 ```
-Dutta, S.; Rivera-Casillas, P.; Styles, B.; Farthing, M.W. Reduced Order Modeling Using Advection-Aware Autoencoders. Math. Comput. Appl. 2022, 27, 34. https://doi.org/10.3390/mca27030034
+Dutta, S.; Rivera-Casillas, P.; Styles, B.; Farthing, M.W.
+Reduced Order Modeling Using Advection-Aware Autoencoders.
+Math. Comput. Appl. 2022, 27, 34. https://doi.org/10.3390/mca27030034
 ```
 This article is part of the Special Issue: "Computational Methods for Coupled Problems in Science and Engineering".
 
