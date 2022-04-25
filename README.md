@@ -19,15 +19,17 @@ Advection-aware Autoencoder Architecture
 
 ## Getting Started
 
+* Generate the high-fidelity snapshot data for the 2D linear advection example by running the script `examples/2DLinearAdvection.py`. It automatically saves the snapshot files in the `data` directory.
+* Generate the high-fidelity snapshot data for the 1D Burgers example by running the notebook `examples/1DBurgers_data.ipynb`. It automatically saves the snapshot files in the `data` directory and generates snapshot visualizations.
 
 ### Dependencies
 
 * Python 3.x
 * Tensorflow TF 2.x. Install either the CPU or the GPU version depending on available resources.
-
-A list of all the package requirements along with version information will be provided in the [requirements](requirements.txt) file.
+* A list of all the dependencies are provided in the [requirements](requirements.txt) file.
 
 ### Executing program
 
-* Generate the high-fidelity snapshot data by running the script `examples/2DLinearAdvection.py`. It automatically saves the snapshot files in the `data` directory.
-* The AA autoencoder training and evaluation can be performed using the notebook `examples/AA_autoencoder_parametric_2DLinearAdvection.ipynb`.
+* The AA autoencoder training and evaluation can be performed using the notebooks `examples/AA_autoencoder_parametric_2DLinearAdvection.ipynb` and `examples/AA_autoencoder_parametric_1DBurgers.ipynb`.
+* The performance of the various AA autoencoder models are compared in the notebooks `examples/AA_autoencoder_comparison_2DLinearAdvection.ipynb` and `examples/AA_autoencoder_comparison_1DBurgers.ipynb`.
+* The LSTM and parametric LSTM models for the 1D Burgers' example are trained and evaluated using the notebooks `examples/LSTM_1DBurgers.ipynb` and `examples/pLSTM_parametric_1DBurgers.ipynb`.
