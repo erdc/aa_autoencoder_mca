@@ -5,18 +5,27 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
-try:
-    os.listdir(base_dir)
-except:
-    base_dir = os.getcwd()
-data_dir = os.path.join(base_dir,'../data/')
-fig_dir  = os.path.join(base_dir,'../figures/')
+from pathlib import Path
+import sys
 
+
+try:
+    base_dir.exists()
+except:
+    curr_dir = Path().resolve()
+    base_dir = curr_dir.parent
+
+data_dir = base_dir / "data" / "adv2d"
+fig_dir = base_dir / "figures"
 
 
 ## Runtime Options
-visualize = False
+visualize = True
 save_data = True
+
+if save_data:
+    data_dir.mkdir(parents=True, exist_ok=True)
+
 
 
 ### Create a uniform mesh
@@ -89,11 +98,11 @@ for ix,sigma in enumerate(sigma_list):
     print("Generating solutions for Sigma = %.4f, Speed = %d"%(y0/sigma, speed))
 
     if save_data:
-        np.savez_compressed(data_dir+'Gaussian2d_pulse_500x200_c%.2f_sigma%.4f'%(speed,y0/sigma),
+        np.savez_compressed(data_dir / Path("Gaussian2d_pulse_500x200_c%.2f_sigma%.4f"%(speed,y0/sigma)),
                             pulse = pulse3[ix], x = xx, y = yy, t = time3[ix], c = speed, sigma = y0/sigma)
 
 if visualize:
-    nt=449
+    nt=409
     fig, ax = plt.subplots(nrows=1,ncols=len(sigma_list),figsize=(11,5),constrained_layout=True)
     for ix,sigma in enumerate(sigma_list):
         ax[ix].imshow(pulse3[ix][:,:,nt],
@@ -103,7 +112,7 @@ if visualize:
         ax[ix].axis('off')
     plt.suptitle("Snapshots of a linearly advecting 2D pulse with different pulse sizes",fontsize=20)
     # plt.show()
-    fig.savefig(fig_dir+'Pulse2D_variable_size.png',dpi=300,bbox_inches='tight')
+    fig.savefig(fig_dir / Path("Pulse2D_variable_size.png"),dpi=300,bbox_inches='tight')
 
 
     
@@ -113,13 +122,13 @@ print("\n********Generating shifted snapshots for parametric variations*******\n
 ## of varying sizes
 vel = 1
 pulse4 = {}
-shift_param_list = [(1,2), (1,4), (1,8), (1,5), (1,2.5), (1,1.6), (2,8), (3,8), (4,8), (5,8), (6,8), (8,8)]
+shift_param_list = [(1,2), (1,4), (1,8), (1,5), (1,2.5), (1,1.6)]
 for ix,(speed,sigma) in enumerate(shift_param_list):
     print('Generating shifted solutions for Sigma=%.4f, Speed = %d'%(y0/sigma, speed))
     pulse4[ix] = Gaussian2D(xx, yy, 240/speed, c=speed, sigma_x = y0/sigma,
                             sigma_y = y0/sigma)
     if save_data:
-        np.savez_compressed(data_dir+'Shift_Gaussian2d_pulse_500x200_c%.2f_sigma%.4f'%(speed, y0/sigma),
+        np.savez_compressed(data_dir / Path("Shift_Gaussian2d_pulse_500x200_c%.2f_sigma%.4f"%(speed, y0/sigma)),
                             pulse = pulse4[ix], x = xx, y = yy, t = 240/speed, c = speed, sigma = y0/sigma)
 
 if visualize:
